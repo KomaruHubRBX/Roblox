@@ -1,6 +1,6 @@
 -- Komaru UI skin (запускать после загрузки Pulse Hub)
 
-if getgenv().KomaruSkinActive then return end
+if getgenv().KomaruSkinActive and not getgenv().KomaruForce then return end
 getgenv().KomaruSkinActive = true
 
 local DISCORD = "https://discord.gg/XbFRsdd4mc"
@@ -53,13 +53,11 @@ local GIRL = makeImage(96, 96, GIRL_B64)
 local TG_ICON = makeImage(96, 96, TG_B64)
 
 local MAP = {
-    ["Pulse Hub"] = "Komaru Hub",
-    ["PULSE HUB"] = "KOMARU HUB",
-    ["Pulse Users"] = "Komaru Users",
-    ["Pulse Chat"] = "Komaru Chat",
-    ["Talk with other Pulse users"] = "Talk with other Komaru users",
-    ["Pulse CFG"] = "Komaru CFG",
-    ["Pulse X"] = "Komaru X",
+    { "PULSE HUB", "KOMARU HUB" },
+    { "Pulse Hub", "Komaru Hub" },
+    { "PULSE", "KOMARU" },
+    { "Pulse", "Komaru" },
+    { "pulse", "komaru" },
 }
 
 local function shortLink(url)
@@ -305,8 +303,8 @@ local function rebrand()
     local function translate(text)
         if type(text) ~= "string" or #text == 0 then return text end
         local out = text
-        for a, b in pairs(MAP) do
-            out = string.gsub(out, a, b)
+        for _, pair in ipairs(MAP) do
+            out = string.gsub(out, pair[1], pair[2])
         end
         return out
     end
@@ -334,6 +332,17 @@ local function rebrand()
 
     local npcHud = core:FindFirstChild("PulseNpcHud")
     if npcHud then npcHud:Destroy() end
+
+    if not getgenv().__komaruNpcHook then
+        getgenv().__komaruNpcHook = true
+        core.ChildAdded:Connect(function(child)
+            if child.Name == "PulseNpcHud" then
+                task.defer(function()
+                    if child.Parent then child:Destroy() end
+                end)
+            end
+        end)
+    end
 
     for _, name in ipairs({ "PulseMM2Hub", "PulseMM2Hub_Parked", "PulseMobileBtns", "PulseBBMirror", "PulsePlayerMenuUI", "PulsePlayerMenuCard" }) do
         local gui = core:FindFirstChild(name)
