@@ -2,7 +2,7 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/5857a6cfae3b90
 
 -- Komaru UI skin (запускать после загрузки Pulse Hub)
 
-if getgenv().KomaruSkinActive and not getgenv().KomaruForce then return end
+local KomaruShouldLoop = not getgenv().KomaruSkinActive
 getgenv().KomaruSkinActive = true
 
 local DISCORD = "https://discord.gg/XbFRsdd4mc"
@@ -382,7 +382,7 @@ getgenv().__pulseDiscordInvite = function()
     copy(DISCORD, "Discord")
 end
 
-task.spawn(function()
+if KomaruShouldLoop then task.spawn(function()
     local deadline = os.clock() + 60
     while os.clock() < deadline do
         if rebrand() then break end
@@ -391,4 +391,4 @@ task.spawn(function()
     while task.wait(2) do
         rebrand()
     end
-end)
+end) end
