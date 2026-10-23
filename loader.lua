@@ -346,6 +346,14 @@ local function rebrand()
     return true
 end
 
+_G.KomaruToast = toast
+_G.KomaruCopy = copy
+_G.KomaruMakeButton = makeButton
+_G.KomaruDiscord = DISCORD
+_G.KomaruTelegram = TELEGRAM
+_G.KomaruDiscIcon = DISC_ICON
+_G.KomaruTGIcon = TG_ICON
+
 getgenv().__pulseDiscordInvite = function()
     copy(DISCORD, "Discord")
 end
