@@ -2,6 +2,9 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/5857a6cfae3b90
 
 -- Komaru UI skin (запускать после загрузки Pulse Hub)
 
+if getgenv().KomaruSkinActive then return end
+getgenv().KomaruSkinActive = true
+
 local DISCORD = "https://discord.gg/XbFRsdd4mc"
 local TELEGRAM = "https://t.me/KomaruScripts"
 
@@ -258,9 +261,11 @@ local function applyLogo(hub)
     for _, target in ipairs({ hub.Root.Window.Sidebar.Brand, hub.Launcher.Card.Row }) do
         for _, child in ipairs(target:GetDescendants()) do
             if child:IsA("ImageLabel") and child.Name == "Mark" then
-                child.Image = ""
-                child.ImageColor3 = Color3.new(1, 1, 1)
-                pcall(function() child.ImageContent = GIRL end)
+                if child.ImageContent ~= GIRL then
+                    child.Image = ""
+                    child.ImageColor3 = Color3.new(1, 1, 1)
+                    pcall(function() child.ImageContent = GIRL end)
+                end
             end
         end
     end
@@ -303,7 +308,9 @@ local function rebrand()
                     for a, b in pairs(MAP) do
                         out = string.gsub(out, a, b)
                     end
-                    if out ~= text then child.Text = out end
+                    if out ~= text then
+                        child.Text = out
+                    end
                 end
             end
             patch(child, depth + 1)
@@ -364,7 +371,7 @@ task.spawn(function()
         if rebrand() then break end
         task.wait(0.5)
     end
-    while task.wait(1) do
+    while task.wait(2) do
         rebrand()
     end
 end)
