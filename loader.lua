@@ -367,6 +367,7 @@ _G.KomaruDiscord = DISCORD
 _G.KomaruTelegram = TELEGRAM
 _G.KomaruDiscIcon = DISC_ICON
 _G.KomaruTGIcon = TG_ICON
+_G.KomaruGirl = GIRL
 
 getgenv().__pulseDiscordInvite = function()
     copy(DISCORD, "Discord")
